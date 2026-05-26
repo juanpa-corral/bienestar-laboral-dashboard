@@ -272,8 +272,6 @@ with st.sidebar:
     st.markdown(
         "**Preprocesamiento de Datos 2026-1**  \n"
         "Universidad de La Sabana  \n\n"
-        "Marco teórico: Modelo JD-R  \n"
-        "*(Demerouti et al., 2001)*"
     )
     st.divider()
     st.subheader("📂 Cargar datos")
