@@ -478,7 +478,6 @@ with tab2:
             st.info(
                 "💡 En la Sección 2 se detectaron duplicados por **subconjunto de columnas "
                 "de perfil** (sociodemográficas + laborales). "
-                "Esa estrategia eliminó **28 registros** con mismo perfil pero distinto ID."
             )
         else:
             st.metric("Filas duplicadas exactas", n_dup2)
