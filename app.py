@@ -967,5 +967,4 @@ with tab4:
 
 ---
 *Proyecto Final — Preprocesamiento de Datos 2026-1 · Universidad de La Sabana*  
-*Demerouti, E., Bakker, A. B., Nachreiner, F., & Schaufeli, W. B. (2001). Journal of Applied Psychology, 86(3), 499–512.*
     """)
