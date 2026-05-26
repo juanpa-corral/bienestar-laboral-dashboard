@@ -517,93 +517,93 @@ with tab2:
             st.success("No se detectaron outliers IQR en variables numéricas.")
 
     # ── Typos ─────────────────────────────────────────────────────────────
-   elif tipo_problema == "Estandarización de texto (typos corregidos)":
-    st.markdown("Errores tipográficos corregidos en la **Sección 3** del pipeline.")
-    st.dataframe(pd.DataFrame(TYPOS_EJEMPLO), use_container_width=True, hide_index=True)
-    st.code(
-        "df[col] = df[col].str.strip()   # quitar espacios\n"
-        "df[col] = df[col].str.title()   # Title Case\n"
-        "df[col] = df[col].replace(diccionario_correcciones)",
-        language="python",
-    )
-
-    cats_ok = [c for c in ["Sexo","Estado_Civil","Sector","Modalidad","Tipo_Contrato"]
-               if c in df_orig.columns and c in df_clean.columns]
-    if cats_ok:
-        col_sel = st.selectbox("Seleccione variable para ver diferencias:", cats_ok)
-
-        vals_orig  = set(df_orig[col_sel].dropna().unique())
-        vals_clean = set(df_clean[col_sel].dropna().unique())
-
-        solo_orig  = sorted(vals_orig  - vals_clean)   # typos eliminados
-        solo_clean = sorted(vals_clean - vals_orig)    # valores canónicos nuevos
-        en_ambos   = sorted(vals_orig  & vals_clean)   # sin cambio
-
-        st.divider()
-        st.markdown(f"#### Análisis de cambios en `{col_sel}`")
-
-        ca, cb, cc = st.columns(3)
-
-        with ca:
-            st.markdown("🔴 **Solo en ORIGINAL** *(typos eliminados)*")
-            if solo_orig:
-                df_so = pd.DataFrame({"Valor sucio": solo_orig,
-                                      "N veces": [int(df_orig[col_sel].value_counts().get(v, 0))
-                                                  for v in solo_orig]})
-                st.dataframe(df_so, use_container_width=True, hide_index=True)
-            else:
-                st.success("No hay valores eliminados")
-
-        with cb:
-            st.markdown("🟢 **Solo en LIMPIO** *(canónicos nuevos)*")
-            if solo_clean:
-                df_sc = pd.DataFrame({"Valor canónico": solo_clean,
-                                      "N veces": [int(df_clean[col_sel].value_counts().get(v, 0))
-                                                  for v in solo_clean]})
-                st.dataframe(df_sc, use_container_width=True, hide_index=True)
-            else:
-                st.info("Mismos valores que el original")
-
-        with cc:
-            st.markdown("⚪ **En ambos** *(sin cambio)*")
-            if en_ambos:
-                df_ea = pd.DataFrame({"Valor": en_ambos})
-                st.dataframe(df_ea, use_container_width=True, hide_index=True)
-
-        st.divider()
-
-        # Gráfico comparativo de conteos
-        st.markdown("#### Conteo de categorías — Antes vs Después")
-        vc_orig_all  = df_orig[col_sel].value_counts()
-        vc_clean_all = df_clean[col_sel].value_counts()
-
-        todas_cats = sorted(set(vc_orig_all.index) | set(vc_clean_all.index))
-        df_comp = pd.DataFrame({
-            "Categoría": todas_cats,
-            "Antes"    : [int(vc_orig_all.get(c, 0))  for c in todas_cats],
-            "Después"  : [int(vc_clean_all.get(c, 0)) for c in todas_cats],
-        })
-
-        x = np.arange(len(todas_cats))
-        width = 0.35
-        fig_cmp, ax_cmp = plt.subplots(figsize=(max(8, len(todas_cats)*1.2), 4))
-        ax_cmp.bar(x - width/2, df_comp["Antes"],   width, label="Original", color="#EF5350", alpha=0.85)
-        ax_cmp.bar(x + width/2, df_comp["Después"], width, label="Limpio",   color="#43A047", alpha=0.85)
-        ax_cmp.set_xticks(x)
-        ax_cmp.set_xticklabels(todas_cats, rotation=35, ha="right", fontsize=9)
-        ax_cmp.set_ylabel("N registros")
-        ax_cmp.set_title(f"Distribución de categorías en {col_sel} — Antes vs Después",
-                         fontweight="bold")
-        ax_cmp.legend()
-        plt.tight_layout()
-        st.pyplot(fig_cmp)
-        plt.close()
-
-        st.caption(
-            f"✔ Categorías únicas antes: **{len(vals_orig)}** → "
-            f"después: **{len(vals_clean)}** "
-            f"({'reducidas' if len(vals_clean) < len(vals_orig) else 'igual'})"
+    elif tipo_problema == "Estandarización de texto (typos corregidos)":
+        st.markdown("Errores tipográficos corregidos en la **Sección 3** del pipeline.")
+        st.dataframe(pd.DataFrame(TYPOS_EJEMPLO), use_container_width=True, hide_index=True)
+        st.code(
+            "df[col] = df[col].str.strip()   # quitar espacios\n"
+            "df[col] = df[col].str.title()   # Title Case\n"
+            "df[col] = df[col].replace(diccionario_correcciones)",
+            language="python",
         )
+
+        cats_ok = [c for c in ["Sexo","Estado_Civil","Sector","Modalidad","Tipo_Contrato"]
+                if c in df_orig.columns and c in df_clean.columns]
+        if cats_ok:
+            col_sel = st.selectbox("Seleccione variable para ver diferencias:", cats_ok)
+
+            vals_orig  = set(df_orig[col_sel].dropna().unique())
+            vals_clean = set(df_clean[col_sel].dropna().unique())
+
+            solo_orig  = sorted(vals_orig  - vals_clean)   # typos eliminados
+            solo_clean = sorted(vals_clean - vals_orig)    # valores canónicos nuevos
+            en_ambos   = sorted(vals_orig  & vals_clean)   # sin cambio
+
+            st.divider()
+            st.markdown(f"#### Análisis de cambios en `{col_sel}`")
+
+            ca, cb, cc = st.columns(3)
+
+            with ca:
+                st.markdown("🔴 **Solo en ORIGINAL** *(typos eliminados)*")
+                if solo_orig:
+                    df_so = pd.DataFrame({"Valor sucio": solo_orig,
+                                        "N veces": [int(df_orig[col_sel].value_counts().get(v, 0))
+                                                    for v in solo_orig]})
+                    st.dataframe(df_so, use_container_width=True, hide_index=True)
+                else:
+                    st.success("No hay valores eliminados")
+
+            with cb:
+                st.markdown("🟢 **Solo en LIMPIO** *(canónicos nuevos)*")
+                if solo_clean:
+                    df_sc = pd.DataFrame({"Valor canónico": solo_clean,
+                                        "N veces": [int(df_clean[col_sel].value_counts().get(v, 0))
+                                                    for v in solo_clean]})
+                    st.dataframe(df_sc, use_container_width=True, hide_index=True)
+                else:
+                    st.info("Mismos valores que el original")
+
+            with cc:
+                st.markdown("⚪ **En ambos** *(sin cambio)*")
+                if en_ambos:
+                    df_ea = pd.DataFrame({"Valor": en_ambos})
+                    st.dataframe(df_ea, use_container_width=True, hide_index=True)
+
+            st.divider()
+
+            # Gráfico comparativo de conteos
+            st.markdown("#### Conteo de categorías — Antes vs Después")
+            vc_orig_all  = df_orig[col_sel].value_counts()
+            vc_clean_all = df_clean[col_sel].value_counts()
+
+            todas_cats = sorted(set(vc_orig_all.index) | set(vc_clean_all.index))
+            df_comp = pd.DataFrame({
+                "Categoría": todas_cats,
+                "Antes"    : [int(vc_orig_all.get(c, 0))  for c in todas_cats],
+                "Después"  : [int(vc_clean_all.get(c, 0)) for c in todas_cats],
+            })
+
+            x = np.arange(len(todas_cats))
+            width = 0.35
+            fig_cmp, ax_cmp = plt.subplots(figsize=(max(8, len(todas_cats)*1.2), 4))
+            ax_cmp.bar(x - width/2, df_comp["Antes"],   width, label="Original", color="#EF5350", alpha=0.85)
+            ax_cmp.bar(x + width/2, df_comp["Después"], width, label="Limpio",   color="#43A047", alpha=0.85)
+            ax_cmp.set_xticks(x)
+            ax_cmp.set_xticklabels(todas_cats, rotation=35, ha="right", fontsize=9)
+            ax_cmp.set_ylabel("N registros")
+            ax_cmp.set_title(f"Distribución de categorías en {col_sel} — Antes vs Después",
+                            fontweight="bold")
+            ax_cmp.legend()
+            plt.tight_layout()
+            st.pyplot(fig_cmp)
+            plt.close()
+
+            st.caption(
+                f"✔ Categorías únicas antes: **{len(vals_orig)}** → "
+                f"después: **{len(vals_clean)}** "
+                f"({'reducidas' if len(vals_clean) < len(vals_orig) else 'igual'})"
+            )
 
     # ── TRATAMIENTO DE ESCALAS LIKERT (NUEVO) ─────────────────────────────
     elif tipo_problema == "Tratamiento de escalas Likert":
