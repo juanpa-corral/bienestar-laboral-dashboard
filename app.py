@@ -140,8 +140,7 @@ def calcular_dimensiones(df: pd.DataFrame) -> pd.DataFrame:
 
 with st.sidebar:
     st.image(
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/"
-        "Universidad_de_La_Sabana_logo.svg/1200px-Universidad_de_La_Sabana_logo.svg.png",
+        "unisabanaLogo.png",
         width=160,
     )
     st.title("🧠 Dashboard Bienestar Laboral")
